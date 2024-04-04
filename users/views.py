@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
 from products.helpers import custom_response
-from user.serializers import UserAccountSerializer, UserAccountUpdateSerializer
+from users.serializers import UserAccountSerializer, UserAccountUpdateSerializer
 from rest_framework import views
 
 class UserAccountUpdateView(views.APIView):

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import views
 from rest_framework.response import Response
 from django.http import Http404
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from .serializer import CategorySerializer, ProductCommentSerializer, ProductSerializer, ProductImageSerializer
 from .models import Category, Product, ProductImage, ProductComment
 from .helpers import custom_response, parse_request

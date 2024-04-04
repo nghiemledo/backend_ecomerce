@@ -15,6 +15,7 @@ import cloudinary.api
 from decouple import config
 import datetime
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -49,9 +50,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'cloudinary',
     'upload',
-    "rest_framework.authtoken",
     "djoser",
-    "user",
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -116,12 +116,14 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+AUTH_USER_MODEL = "users.UserAccount"
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Ho_Chi_Minh'
 
 USE_I18N = True
 
@@ -159,8 +161,9 @@ DJOSER = {
  # Disable tính năng gửi email kích hoạt tài khoản
     'SEND_ACTIVATION_EMAIL': False,
     'SERIALIZERS': {
-        'user': 'user.serializers.UserAccountSerializer',
-        'current_user': 'user.serializers.UserAccountSerializer',
+        'users': 'users.serializers.UserAccountSerializer',
+        'current_user': 'users.serializers.UserAccountSerializer',
     },
 }
+
 
