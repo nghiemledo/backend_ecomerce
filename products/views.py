@@ -13,6 +13,10 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+#  serializer : 
+#  backend (object) ==> serializer() ==> frontend (JSON, XML)
+#  CRUD : CREATE(post) / READ(get) / UPDATE(put/patch) / DELETE(delete)
+
 class CategoryAPIView(views.APIView):
     def get(self, request):
         try:
@@ -27,6 +31,8 @@ class CategoryAPIView(views.APIView):
             
     def post(self, request):
  # parse request body data từ json sang dạng mà Python hiểu được
+ 
+    # object ("id", "name", "category_id") ==> json ==> object
         data = parse_request(request)
         serializer = CategorySerializer(data=data)
  # nếu parse thành công thì cho data vào serializer để mapping với model
