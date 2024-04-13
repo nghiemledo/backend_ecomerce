@@ -8,4 +8,8 @@ class Photo(models.Model):
     width = models.IntegerField()
     height = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+
 

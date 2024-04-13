@@ -1,6 +1,5 @@
 from . import models
 from rest_framework import serializers
-
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         models = models.ProductImage
