@@ -13,25 +13,9 @@ class ProductCommentSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, read_only = True)
     comment = ProductCommentSerializer(many=True, read_only = True)
-    
     class Meta:
-        models = models.Product
-        fields = (
-            'id',
-            'name',
-            'unit',
-            'price',
-            'discount',
-            'amount',
-            'is_public',
-            'thumbnail',
-            'images',
-            'comments',
-            'category_id',
-            'created_at',
-            'updated_at',
-            'deleted_at'
-        )
+        model = models.Product
+        fields = '__all__'
     
 class CategorySerializer(serializers.ModelSerializer):
     products = ProductSerializer(many=True, read_only=True)

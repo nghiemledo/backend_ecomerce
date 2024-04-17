@@ -10,6 +10,7 @@ from rest_framework.parsers import JSONParser
 from json import JSONDecodeError
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from django.contrib.auth import get_user_model
+from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 
 User = get_user_model()
 
@@ -18,6 +19,7 @@ User = get_user_model()
 #  CRUD : CREATE(post) / READ(get) / UPDATE(put/patch) / DELETE(delete)
 
 class CategoryAPIView(views.APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get(self, request):
         try:
  # đầu tiên, query tất cả record của Category
@@ -45,6 +47,8 @@ class CategoryAPIView(views.APIView):
             return custom_response('Create category failed !', 'Error', serializer.errors, 400)
         
 class CategoryDetilAPIView(views.APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    
     def get_object(self, id_slug):
         try:
             return Category.objects.get(id = id_slug)
@@ -81,6 +85,7 @@ class CategoryDetilAPIView(views.APIView):
             return custom_response('Delete category failed!', 'Error', 'Category not found!', 400)
         
 class ProductViewAPI(views.APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get(self, request):
         try:
             products = Product.objects.all()
@@ -109,6 +114,7 @@ class ProductViewAPI(views.APIView):
             return custom_response('Create product failed!', 'Error', {'Error' : str(e)}, 400)    
         
 class ProductDetailAPIView(views.APIView):
+    permission_classes = [AllowAny]
     def get_object(self, id_slug):
         try:
             return Product.objects.get(id=id_slug)

@@ -33,10 +33,9 @@ cloudinary.config(
 SECRET_KEY = 'django-insecure-*)vo&(3_)=azik@#z8%=4q3mdh!z05z$$2k11-0kzcrt4$2wvg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['.vercel.app', '*']
-
 
 # Application definition
 
@@ -158,10 +157,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-    # Sử dụng JWT làm phương thức xác thực cho API
-    'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
     'DEFAULT_PERMISSION_CLASSES': (
     # Định nghĩa các quyền truy cập cho API
     'rest_framework.permissions.IsAdminUser',

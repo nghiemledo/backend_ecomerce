@@ -15,12 +15,11 @@ class Category(models.Model):
 class Product(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length = 255)
-    unit = models.CharField(max_length=3)
+    unit = models.CharField(max_length=3, blank=True)
     price = models.FloatField()
-    discount = models.IntegerField()
-    amount = models.IntegerField()
-    is_public = models.BooleanField()
-    thumbnail = models.CharField(max_length=128)
+    discount = models.IntegerField(blank=True)
+    amount = models.IntegerField(blank=True)
+    thumbnail = models.CharField(max_length=255, blank=True)
  # sử dụng ForeignKey để khai báo một field là khóa ngoại từ một bảng khác
  # on_delete=models.CASCADE để mô tả khi bảng category bị xóa một record...
  # thì tất cả record product có id tương ứng sẽ bị xóa theo
@@ -30,7 +29,7 @@ class Product(models.Model):
                                     related_name='products', null=False)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
-    deleted_at = models.DateTimeField(null=True)
+    deleted_at = models.DateTimeField(default=timezone.now)
     
     class Meta:
         ordering = ['-created_at']

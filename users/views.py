@@ -1,15 +1,15 @@
 from django.shortcuts import render
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 from products.helpers import custom_response
 from users.serializers import UserAccountSerializer, UserAccountUpdateSerializer
 from rest_framework import views
 
 class UserAccountUpdateView(views.APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     
     def get(self, request, *args, **kwargs):
         serializer = UserAccountSerializer(request.user)
-        return custom_response('Get user successfully!', 'Success', serializer.data, 200)
+        return custom_response('Get user successfully!', 'Success',serializer.data, 200)
     
     def put(self, request, *args, **kwargs):
         serializer = UserAccountUpdateSerializer(request.user, data=request.data, partial=True)
