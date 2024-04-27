@@ -1,12 +1,12 @@
 from djoser.serializers import UserCreateSerializer
 from rest_framework import serializers
-from users.models import UserAccount
-# Tạo một custom serializer kế thừa từ UserCreateSerializer
+from user.models import UserAccount
 
+# Tạo một custom serializer kế thứa từ UserCreateSerializer
 class UserAccountSerializer(UserCreateSerializer):
     password = serializers.CharField(style={"input_type": "password"}, write_only=True)
     class Meta(UserCreateSerializer.Meta):
-        fields = ('id', 'email', 'password', 'first_name', 'last_name', 'phone', 'address')
+        fields = ('id', 'email', 'password', 'username', 'first_name', 'last_name', 'phone', 'address')
         
 class UserAccountUpdateSerializer(serializers.ModelSerializer):
     class Meta:

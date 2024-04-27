@@ -10,7 +10,7 @@ class Category(models.Model):
     icon_url = models.CharField(max_length = 128, null = True)
     created_at = models.DateTimeField(default = timezone.now)
     updated_at = models.DateTimeField(auto_now = True)
-    deleted_at = models.DateTimeField(null= True)
+    deleted_at = models.DateTimeField(default=timezone.now)
     
 class Product(models.Model):
     id = models.AutoField(primary_key=True)

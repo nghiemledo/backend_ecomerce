@@ -51,10 +51,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'cloudinary',
     'upload',
-    "djoser",
-    'users',
+    "djoser",   
     'orders',
-    'drf_yasg'
+    'drf_yasg',
+    'corsheaders',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -129,7 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-AUTH_USER_MODEL = "users.UserAccount"
+AUTH_USER_MODEL = "user.UserAccount"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -148,7 +149,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 
 # Default primary key field type
@@ -157,7 +157,9 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
     'DEFAULT_PERMISSION_CLASSES': (
     # Định nghĩa các quyền truy cập cho API
     'rest_framework.permissions.IsAdminUser',
@@ -174,13 +176,17 @@ DJOSER = {
  # Disable tính năng gửi email kích hoạt tài khoản
     'SEND_ACTIVATION_EMAIL': False,
     'SERIALIZERS': {
-        'users': 'users.serializers.UserAccountSerializer',
-        'current_user': 'users.serializers.UserAccountSerializer',
+        'user': 'user.serializers.UserAccountSerializer',
+        'current_user': 'user.serializers.UserAccountSerializer',
     },
 }
 
 SWAGGER_SETTINGS = {
-    'USE_SESSION_AUTH': False
+    'USE_SESSION_AUTH': True
 }
 
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:3000",  # Frontend URL
+    "https://your.vercel.app",  # Additional domains 
+]
 

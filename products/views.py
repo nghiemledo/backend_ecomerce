@@ -46,8 +46,8 @@ class CategoryAPIView(views.APIView):
         else:
             return custom_response('Create category failed !', 'Error', serializer.errors, 400)
         
-class CategoryDetilAPIView(views.APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+class CategoryDetailAPIView(views.APIView):
+    permission_classes = [AllowAny]
     
     def get_object(self, id_slug):
         try:
@@ -85,7 +85,7 @@ class CategoryDetilAPIView(views.APIView):
             return custom_response('Delete category failed!', 'Error', 'Category not found!', 400)
         
 class ProductViewAPI(views.APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [AllowAny]
     def get(self, request):
         try:
             products = Product.objects.all()

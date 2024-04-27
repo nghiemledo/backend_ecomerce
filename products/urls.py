@@ -3,7 +3,7 @@ from products import views
 
 urlpatterns = [
     path('category/', views.CategoryAPIView.as_view()),
-    path('category/<slug:id_slug>/', views.CategoryDetilAPIView.as_view()),
+    path('category/<slug:id_slug>/', views.CategoryDetailAPIView.as_view()),
     path("product/<slug:product_id_slug>/images/", views.ProductImageAPIView.as_view()),
     path("product/<slug:product_id_slug>/images/<slug:id_slug>/", 
         views.ProductImageDetailAPIView.as_view()),
