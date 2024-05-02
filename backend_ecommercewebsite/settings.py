@@ -156,16 +156,31 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+#     ),
+#     'DEFAULT_PERMISSION_CLASSES': (
+#     # Định nghĩa các quyền truy cập cho API
+#     'rest_framework.permissions.IsAdminUser',
+#     'rest_framework.permissions.IsAuthenticated',
+#     'rest_framework.permissions.AllowAny',
+#     ),
+#     'DEFAULT_PAGINATION_CLASS': 
+#         'rest_framework.pagination.PageNumberPagination',
+#         'PAGE_SIZE': '2'
+# }
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-    # Định nghĩa các quyền truy cập cho API
-    'rest_framework.permissions.IsAdminUser',
-    'rest_framework.permissions.IsAuthenticated',
-    'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAdminUser',
+        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
     ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 4
 }
 
 SIMPLE_JWT = {
@@ -187,6 +202,6 @@ SWAGGER_SETTINGS = {
 
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",  # Frontend URL
-    "https://your.vercel.app",  # Additional domains 
+    "https://your.vercel.app",  # Additional domains
 ]
 

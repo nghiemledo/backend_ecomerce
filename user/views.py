@@ -10,6 +10,13 @@ class UserAccountUpdateView(views.APIView):
         return custom_response('Get user successfully!', 'Success', serializer.data, 200)
     
     def put(self, request, *args, **kwargs):
+        serializer = UserAccountUpdateSerializer(request.user, data=request.data, partial=False)
+        if serializer.is_valid():
+            serializer.save()
+            return custom_response('Update user successfully!', 'Success', serializer.data, 200)
+        return custom_response('Update user failed!', 'Error', serializer.errors, 400) 
+
+    def patch(self, request, *args, **kwargs):
         serializer = UserAccountUpdateSerializer(request.user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()

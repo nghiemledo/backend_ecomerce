@@ -11,6 +11,10 @@ from json import JSONDecodeError
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
+from .pagination import ProductCreatePagination
+from rest_framework.pagination import PageNumberPagination
+
+
 
 User = get_user_model()
 
@@ -18,8 +22,10 @@ User = get_user_model()
 #  backend (object) ==> serializer() ==> frontend (JSON, XML)
 #  CRUD : CREATE(post) / READ(get) / UPDATE(put/patch) / DELETE(delete)
 
-class CategoryAPIView(views.APIView):
+class CategoryAPIView(views.APIView, PageNumberPagination):
     permission_classes = [IsAuthenticatedOrReadOnly]
+    pagination_class = PageNumberPagination
+    
     def get(self, request):
         try:
  # đầu tiên, query tất cả record của Category
@@ -50,10 +56,10 @@ class CategoryDetailAPIView(views.APIView):
     permission_classes = [AllowAny]
     
     def get_object(self, id_slug):
-        try:
+        try:    
             return Category.objects.get(id = id_slug)
         except:
-            return Http404
+            return Http404("Category not found")
         
     def get(self, id_slug, format = None):
         try:
@@ -84,8 +90,11 @@ class CategoryDetailAPIView(views.APIView):
         except:
             return custom_response('Delete category failed!', 'Error', 'Category not found!', 400)
         
-class ProductViewAPI(views.APIView):
+class ProductViewAPI(views.APIView,PageNumberPagination ):
     permission_classes = [AllowAny]
+    pagination_class = PageNumberPagination
+    # pagination_class = ProductCreatePagination
+    
     def get(self, request):
         try:
             products = Product.objects.all()
@@ -93,6 +102,7 @@ class ProductViewAPI(views.APIView):
             return custom_response('Get all products successfully!', 'Success', serializer.data, 200)
         except:
             return custom_response('Get all products failed!', 'Error', None, 400)
+        
     def post(self, request):
         try:
             data = parse_request(request)
@@ -115,22 +125,25 @@ class ProductViewAPI(views.APIView):
         
 class ProductDetailAPIView(views.APIView):
     permission_classes = [AllowAny]
-    def get_object(self, id_slug):
+    def get_object(self, id):
         try:
-            return Product.objects.get(id=id_slug)
+            return Product.objects.get(id=id)
         except:
             raise Http404
-    def get(self, request, id_slug, format=None):
+        
+    permission_classes = [AllowAny]
+    def get(self, request, id, format=None):
         try:
-            product = self.get_object(id_slug)
+            product = self.get_object(id)
             serializer = ProductSerializer(product)
             return custom_response('Get product successfully!', 'Success', serializer.data, 200)
         except:
             return custom_response('Get product failed!', 'Error', "Product not found!", 400)
-    def put(self, request, id_slug):
+        
+    def put(self, request, id):
         try:
             data = parse_request(request)
-            product = self.get_object(id_slug)
+            product = self.get_object(id)
             serializer = ProductSerializer(product, data=data)
             if serializer.is_valid():
                 serializer.save()
@@ -139,11 +152,11 @@ class ProductDetailAPIView(views.APIView):
                 return custom_response('Update product failed', 'Error', serializer.errors, 400)
         except:
             return custom_response('Update product failed', 'Error', "Category not found!", 400)
-    def delete(self, request, id_slug):
+    def delete(self, request, id):
         try:
-            product = self.get_object(id_slug)
+            product = self.get_object(id)
             product.delete()
-            return custom_response('Delete product successfully!', 'Success', {"product_id": id_slug}, 204)
+            return custom_response('Delete product successfully!', 'Success', {"product_id": id}, 204)
         except:
             return custom_response('Delete product failed!', 'Error', "Product not found!", 400)
         

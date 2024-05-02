@@ -1,5 +1,5 @@
 from rest_framework import views
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from products.helpers import custom_response, parse_request
 from django.http import Http404
 from django.contrib.auth import get_user_model
@@ -39,24 +39,24 @@ class OrderAPIView(views.APIView):
         
 class OrderDetailAPIView(views.APIView):
     permission_classes = [AllowAny]
-    def get_object(self, id_slug):
+    def get_object(self, id):
         try:
-            return Order.objects.get(id=id_slug)
+            return Order.objects.get(id=id)
         except:
             raise Http404
         
-    def get(self, request, id_slug):
+    def get(self, request, id):
         try:
-            order = self.get_object(id_slug)
+            order = self.get_object(id)
             serializers = OrderSerializer(order)
             return custom_response('Get all order details successfully!', 'Success', serializers.data, 200)
         except:
             return custom_response('Get all order details failed!', 'Error', None, 400)
         
-    def put(self, request, id_slug):
+    def put(self, request, id):
         try:
             data = parse_request(request)
-            order = self.get_object(id_slug)
+            order = self.get_object(id)
             serializer = OrderSerializer(order, data=data)
             if serializer.is_valid():
                 serializer.save()
@@ -66,25 +66,25 @@ class OrderDetailAPIView(views.APIView):
         except:
             return custom_response('Update order failed', 'Error', "Order not found!", 400)
         
-    def delete(self, request, id_slug):
+    def delete(self, request, id):
         try:
-            order = self.get_object(id_slug)
+            order = self.get_object(id)
             order.delete()
-            return custom_response('Delete order successfully!', 'Success', {"order_id": id_slug}, 204)
+            return custom_response('Delete order successfully!', 'Success', {"order_id": id}, 204)
         except:
             return custom_response('Delete order failed!', 'Error', "Order not found!", 400)
         
 class OrderDetailWithProductAPIView(views.APIView):
     permission_classes = [AllowAny]
-    def get(self, request, order_id_slug):
+    def get(self, request, order_id):
         try:
-            order_details = OrderDetail.objects.filter(order_id=order_id_slug).all()
+            order_details = OrderDetail.objects.filter(id=order_id).all()
             serializers = OrderDetailSerializer(order_details)
             return custom_response('Get all order detail successfully!', 'Success', serializers.data, 200)
         except:
             return custom_response('Get all order detail failed!', 'Error', None, 400)
         
-    def post(self, request, order_id_slug):
+    def post(self, request, order_id):
         try:
             data = parse_request(request)
             order = Order.objects.get(id=data['order_id'])

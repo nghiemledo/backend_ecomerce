@@ -17,13 +17,16 @@ class Order(models.Model):
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
-    deleted_at = models.DateTimeField(null=True)
+    deleted_at = models.DateTimeField(auto_now=True)
     
     class Meta:
         ordering = ['created_at']
         indexes = [
         models.Index(fields=['created_at'])
         ]
+        
+    def __str__(self):
+        return self.receiver_name
         
 class OrderDetail(models.Model):
     id = models.AutoField(primary_key=True)
@@ -34,7 +37,7 @@ class OrderDetail(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
-    deleted_at = models.DateTimeField(null=True)
+    deleted_at = models.DateTimeField(auto_now=True)
     
 @receiver([post_save, post_delete], sender=OrderDetail)
 def update_order_total(sender, instance, **kwargs):
