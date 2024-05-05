@@ -3,10 +3,10 @@
         {
           "src": "backend_ecommerce/wsgi.py",
           "use": "@vercel/python",
-          "config": { "maxLambdaSize": "15mb", "runtime": "python5.0.3" }
+          "config": { "maxLambdaSize": "15mb", "runtime": "python3.11" }
         },
         {
-          "src": "https://luxchronos-react-luka.vercel.app/",
+          "src": "https://luxchronos-react-luka.vercel.app",
           "use": "@vercel/static"
         }
       ],
