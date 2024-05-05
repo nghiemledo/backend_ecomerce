@@ -36,7 +36,7 @@ SECRET_KEY = 'django-insecure-*)vo&(3_)=azik@#z8%=4q3mdh!z05z$$2k11-0kzcrt4$2wvg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app', '*']
+ALLOWED_HOSTS = ['.vercel.app', 'https://luxchronos-react-luka.vercel.app']
 
 # Application definition
 
@@ -111,7 +111,7 @@ STORAGES = {
 }
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_MANIFEST_STRICT = False
-WHITENOISE_ALLOW_ALL_ORIGINS = True
+# WHITENOISE_ALLOW_ALL_ORIGINS = True
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
