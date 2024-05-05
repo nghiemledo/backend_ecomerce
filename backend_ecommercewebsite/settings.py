@@ -207,3 +207,5 @@ CORS_ORIGIN_WHITELIST = [
     "https://luxchronos-react-luka.vercel.app",  # Additional domains
 ]
 
+CORS_ALLOWED_ORIGINS = ['https://luxchronos-react-luka.vercel.app']
+
