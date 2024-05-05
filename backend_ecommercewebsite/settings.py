@@ -15,6 +15,7 @@ from pathlib import Path
 import cloudinary.api
 from decouple import config
 import datetime
+import dj_database_url
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -95,10 +96,11 @@ WSGI_APPLICATION = 'backend_ecommercewebsite.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
+    'default': dj_database_url.parse(config('DATABASE_URL'), conn_max_age=600, conn_health_checks=True)
 }
 
 
@@ -199,9 +201,9 @@ DJOSER = {
 SWAGGER_SETTINGS = {
     'USE_SESSION_AUTH': True
 }
-
+# CORS_ALLOW_ALL_ORIGINS = True
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",  # Frontend URL
-    "https://your.vercel.app",  # Additional domains
+    "https://luxchronos-react-luka.vercel.app",  # Additional domains
 ]
 
