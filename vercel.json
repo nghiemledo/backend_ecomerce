@@ -1,18 +1,23 @@
 {
-    "builds": [{
-    "src": "backend_ecommerce/wsgi.py",
-    "use": "@vercel/python",
-    "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
-    },
-    {
-    "src": "build_files.sh",
-    "use": "@vercel/static-build",
-    "config": { "distDir": "staticfiles_build" }
-    }],
-    "routes": [
-    {
-    "src": "/(.*)",
-    "dest": "backend_ecommerce/wsgi.py"
-    }
-    ]
+    "builds": [
+        {
+          "src": "backend_ecommerce/wsgi.py",
+          "use": "@vercel/python",
+          "config": { "maxLambdaSize": "15mb", "runtime": "python5.0.3" }
+        },
+        {
+          "src": "https://luxchronos-react-luka.vercel.app/",
+          "use": "@vercel/static"
+        }
+      ],
+      "routes": [
+        {
+          "src": "/api/(.*)",
+          "dest": "backend_ecommerce/wsgi.py"
+        },
+        {
+          "src": "/(.*)",
+          "dest": "https://luxchronos-react-luka.vercel.app/index.html"
+        }
+      ]
 }
