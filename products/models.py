@@ -50,7 +50,7 @@ class ProductImage(models.Model):
                                     related_name='product_images', null=False)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
-    deleted_at = models.DateTimeField(null=True)
+    deleted_at = models.DateTimeField(default=timezone.now)
 
 class ProductComment(models.Model):
     id = models.AutoField(primary_key=True)
@@ -65,5 +65,5 @@ class ProductComment(models.Model):
     parent_id = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
-    deleted_at = models.DateTimeField(null=True)
+    deleted_at = models.DateTimeField(default=timezone.now)
     

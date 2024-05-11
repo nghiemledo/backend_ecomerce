@@ -36,7 +36,7 @@ SECRET_KEY = 'django-insecure-*)vo&(3_)=azik@#z8%=4q3mdh!z05z$$2k11-0kzcrt4$2wvg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app', 'https://luxchronos-react-luka.vercel.app']
+ALLOWED_HOSTS = ['.vercel.app', '*']
 
 # Application definition
 
@@ -202,11 +202,11 @@ DJOSER = {
 SWAGGER_SETTINGS = {
     'USE_SESSION_AUTH': True
 }
-# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",  # Frontend URL
     "https://luxchronos-react-luka.vercel.app",  # Additional domains
 ]
 
-CORS_ALLOWED_ORIGINS = ['https://luxchronos-react-luka.vercel.app']
+# CORS_ALLOWED_ORIGINS = ['https://luxchronos-react-luka.vercel.app']
 
