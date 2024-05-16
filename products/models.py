@@ -21,8 +21,10 @@ class Product(models.Model):
     unit = models.CharField(max_length=3, blank=True)
     price = models.FloatField()
     discount = models.IntegerField(blank=True)
-    amount = models.IntegerField(blank=True)
+    amount = models.IntegerField(blank=True)    
     thumbnail = models.CharField(max_length=255, blank=True)    
+    review_count = models.FloatField(default=0)
+    bought_count = models.FloatField(default=0)
  # sử dụng ForeignKey để khai báo một field là khóa ngoại từ một bảng khác
  # on_delete=models.CASCADE để mô tả khi bảng category bị xóa một record...
  # thì tất cả record product có id tương ứng sẽ bị xóa theo
