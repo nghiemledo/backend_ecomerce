@@ -21,7 +21,7 @@ class Product(models.Model):
     unit = models.CharField(max_length=3, blank=True)
     price = models.FloatField()
     discount = models.IntegerField(blank=True)
-    amount = models.IntegerField(blank=True)    
+    amount = models.IntegerField(blank=True)
     thumbnail = models.CharField(max_length=255, blank=True)    
     review_count = models.FloatField(default=0)
     bought_count = models.FloatField(default=0)
