@@ -90,16 +90,29 @@ class CategoryDetailAPIView(views.APIView):
         except:
             return custom_response('Delete category failed!', 'Error', 'Category not found!', 400)
         
-class ProductViewAPI(views.APIView,PageNumberPagination ):
+class ProductViewAPI(views.APIView ):
     permission_classes = [AllowAny]
-    pagination_class = PageNumberPagination
+    # pagination_class = PageNumberPagination
     # pagination_class = ProductCreatePagination
     
     def get(self, request):
         try:
-            products = Product.objects.all()
-            serializer = ProductSerializer(products, many=True)
-            return custom_response('Get all products successfully!', 'Success', serializer.data, 200)
+            page = request.query_params.get('page', 1)
+            limit = request.query_params.get('limit', 10)
+            keyword = request.query_params.get('keyword', '')
+            
+            products = Product.objects.filter(name__icontains=keyword)
+            total_records = products.count()
+            paginator = PageNumberPagination()
+            paginator.page_size = int(limit)
+            paginated_products = paginator.paginate_queryset(products, request)
+
+            total_pages = paginator.page.paginator.num_pages
+
+            serializer = ProductSerializer(paginated_products, many=True)
+            
+            context = {'data': serializer.data, 'page': int(page), 'limit': int(limit),  'total_page': total_pages,'total_record': total_records}
+            return custom_response('Get all products successfully!', 'Success', context, 200)
         except:
             return custom_response('Get all products failed!', 'Error', None, 400)
         
