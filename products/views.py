@@ -2,7 +2,6 @@ from django.shortcuts import render
 from rest_framework import views
 from rest_framework.response import Response
 from django.http import Http404
-# from django.contrib.auth.models import User
 from .serializer import CategorySerializer, ProductCommentSerializer, ProductSerializer, ProductImageSerializer
 from .models import Category, Product, ProductImage, ProductComment
 from .helpers import custom_response, parse_request
@@ -14,38 +13,22 @@ from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from .pagination import ProductCreatePagination
 from rest_framework.pagination import PageNumberPagination
 
-
-
 User = get_user_model()
 
-#  serializer : 
-#  backend (object) ==> serializer() ==> frontend (JSON, XML)
-#  CRUD : CREATE(post) / READ(get) / UPDATE(put/patch) / DELETE(delete)
-
-class CategoryAPIView(views.APIView, PageNumberPagination):
+class CategoryAPIView(views.APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
-    pagination_class = PageNumberPagination
     
     def get(self, request):
         try:
- # đầu tiên, query tất cả record của Category
             categories = Category.objects.all()
- # sau đó, cho chúng nó vào serializer để parse từ array thành JSON
             serializer = CategorySerializer(categories, many=True)
- # nếu parse thành công thì return về cho client
             return custom_response('Get all categories successfully!', 'Success', serializer.data, 200)
         except Exception as e:
             return custom_response('Get all categoriese failed !', 'Error', None, 400)
             
     def post(self, request):
- # parse request body data từ json sang dạng mà Python hiểu được
- 
-    # object ("id", "name", "category_id") ==> json ==> object
         data = parse_request(request)
         serializer = CategorySerializer(data=data)
- # nếu parse thành công thì cho data vào serializer để mapping với model
- # Kiểm tra xem có mapping thành công không
- # mapping thành công thì lưu record vào database và return
         if serializer.is_valid():
             serializer.save()
             return custom_response('Create category successfully!', 'Success', serializer.data, 201)
@@ -92,16 +75,34 @@ class CategoryDetailAPIView(views.APIView):
         
 class ProductViewAPI(views.APIView ):
     permission_classes = [AllowAny]
-    # pagination_class = PageNumberPagination
-    # pagination_class = ProductCreatePagination
     
     def get(self, request):
         try:
             page = request.query_params.get('page', 1)
             limit = request.query_params.get('limit', 10)
             keyword = request.query_params.get('keyword', '')
+            category = request.query_params.get('category', '')
+            min_price = request.query_params.get('min_price', 0)
+            max_price = request.query_params.get('max_price', float('inf'))
             
-            products = Product.objects.filter(name__icontains=keyword)
+            products = Product.objects.all()
+
+            if keyword:
+                products = products.filter(name__icontains=keyword)
+
+            if category:
+                try:
+                    category_obj = Category.objects.get(name__icontains=category)
+                    products = products.filter(category_id=category_obj)
+                except Category.DoesNotExist:
+                    products = products.none()
+
+            if min_price:
+                products = products.filter(price__gte=min_price)
+
+            if max_price and max_price != float('inf'):
+                products = products.filter(price__lte=max_price)
+            
             total_records = products.count()
             paginator = PageNumberPagination()
             paginator.page_size = int(limit)
@@ -144,7 +145,6 @@ class ProductDetailAPIView(views.APIView):
         except:
             raise Http404
         
-    permission_classes = [AllowAny]
     def get(self, request, id, format=None):
         try:
             product = self.get_object(id)
